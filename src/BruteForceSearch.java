@@ -69,4 +69,10 @@ public class BruteForceSearch {
         }
         return false;
     }
+
+    public static void main(String[] args) {
+        BruteForceSearch bruteForceSearch = new BruteForceSearch("Insert the missing parts to complete the following \"short hand if...else\" statement:", "f...");
+        System.out.println(bruteForceSearch.find());
+        System.out.println(bruteForceSearch.find2());
+    }
 }
