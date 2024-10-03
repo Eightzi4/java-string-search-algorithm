@@ -3,24 +3,11 @@
 public class Main {
     public static void main(String[] args) {
         AlgorithmDemonstration algorithmDemonstration = new AlgorithmDemonstration();
-        algorithmDemonstration.setSample("aaa");
+        algorithmDemonstration.setSample("xyz");
         algorithmDemonstration.step();
-        algorithmDemonstration.setText("bbaaa");
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
-        algorithmDemonstration.step();
+        algorithmDemonstration.setText("cyx xy xyz");
+        for (int i = 0; i < 24; i++) {
+            algorithmDemonstration.step();
+        }
     }
 }

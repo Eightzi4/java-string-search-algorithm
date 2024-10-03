@@ -6,6 +6,13 @@ public class AlgorithmDemonstration {
     private int textCharIndex = 0;
     private int savedTextCharIndex = 0;
     private int sampleCharIndex = 0;
+    private String[] stepsInfo = {
+            "Input hasn't been entered or it is wrong.",
+            "Provided input is valid, but the seach hasn't begun yet.", "Comparing characters text[textCharIndex] & sample[sampleCharIndex].",
+            "Compared characters match.",
+            "Compared characters don't match.",
+            "Searching is done."
+    };
 
     enum Step {
         INITIALIZED,
@@ -44,14 +51,14 @@ public class AlgorithmDemonstration {
     public void step() {
         switch (currentStep) {
             case INITIALIZED:
-                System.out.println("Class initialized, but input is not valid!");
+                printStepInfo("Class initialized, but input is not valid!");
                 break;
             case VALID_INPUT_PROVIDED:
-                System.out.println("Valid input has been provided!");
+                printStepInfo("text: " + text + " sample: " + sample);
                 currentStep = Step.CHARS_COMPARISON;
                 break;
             case CHARS_COMPARISON:
-                System.out.println("Comparing chars!");
+                printStepInfo("text[" + textCharIndex + "] = \"" + text.charAt(textCharIndex) + "\" sample[" + sampleCharIndex + "] = \"" + sample.charAt(sampleCharIndex) + "\"");
                 if (text.charAt(textCharIndex) == sample.charAt(sampleCharIndex)) {
                     currentStep = Step.CHARS_DO_MATCH;
                 } else {
@@ -59,10 +66,10 @@ public class AlgorithmDemonstration {
                 }
                 break;
             case CHARS_DO_MATCH:
-                System.out.println("Chars do match!");
+                printStepInfo("\"" + text.charAt(textCharIndex) + "\" == \"" + sample.charAt(sampleCharIndex) + "\"");
                 ++textCharIndex;
                 ++sampleCharIndex;
-                if (savedTextCharIndex == -1) {
+                if (savedTextCharIndex == 0) {
                     savedTextCharIndex = textCharIndex;
                 }
                 if (sampleCharIndex == sample.length()) {
@@ -76,11 +83,10 @@ public class AlgorithmDemonstration {
                 currentStep = Step.CHARS_COMPARISON;
                 break;
             case CHARS_DO_NOT_MATCH:
-                System.out.println("Chars do not match!");
-                if (savedTextCharIndex != -1) {
-                    textCharIndex = savedTextCharIndex + 1;
-                    System.out.println("Going back to " + (savedTextCharIndex + 1));
-                    savedTextCharIndex = -1;
+                printStepInfo("\"" + text.charAt(textCharIndex) + "\" != \"" + sample.charAt(sampleCharIndex) + "\"");
+                if (savedTextCharIndex != 0) {
+                    textCharIndex = savedTextCharIndex;
+                    savedTextCharIndex = 0;
                 }
                 ++textCharIndex;
                 sampleCharIndex = 0;
@@ -91,9 +97,10 @@ public class AlgorithmDemonstration {
                 currentStep = Step.CHARS_COMPARISON;
                 break;
             case DONE:
-                System.out.println("Search done!");
+                printStepInfo("sample found at text[" + (savedTextCharIndex - 1) + "]..text[" + (savedTextCharIndex - 1 + sample.length()) + "]");
                 break;
         }
+        ++stepsMade;
     }
 
     public void validateInput() {
@@ -103,5 +110,9 @@ public class AlgorithmDemonstration {
         } else {
             System.out.println("Input is not valid!");
         }
+    }
+
+    private void printStepInfo(String message) {
+        System.out.println("[" + stepsMade + "] " + message + " info: " + stepsInfo[currentStep.ordinal()]);
     }
 }
