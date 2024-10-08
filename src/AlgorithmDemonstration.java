@@ -51,56 +51,80 @@ public class AlgorithmDemonstration {
     public void step() {
         switch (currentStep) {
             case INITIALIZED:
-                printStepInfo("Class initialized, but input is not valid!");
+                stepInitialized();
                 break;
             case VALID_INPUT_PROVIDED:
-                printStepInfo("text: " + text + " sample: " + sample);
-                currentStep = Step.CHARS_COMPARISON;
+                stepValidInputProvided();
                 break;
             case CHARS_COMPARISON:
-                printStepInfo("text[" + textCharIndex + "] = \"" + text.charAt(textCharIndex) + "\" sample[" + sampleCharIndex + "] = \"" + sample.charAt(sampleCharIndex) + "\"");
-                if (text.charAt(textCharIndex) == sample.charAt(sampleCharIndex)) {
-                    currentStep = Step.CHARS_DO_MATCH;
-                } else {
-                    currentStep = Step.CHARS_DO_NOT_MATCH;
-                }
+                stepCharsComparison();
                 break;
             case CHARS_DO_MATCH:
-                printStepInfo("\"" + text.charAt(textCharIndex) + "\" == \"" + sample.charAt(sampleCharIndex) + "\"");
-                ++textCharIndex;
-                ++sampleCharIndex;
-                if (savedTextCharIndex == 0) {
-                    savedTextCharIndex = textCharIndex;
-                }
-                if (sampleCharIndex == sample.length()) {
-                    currentStep = Step.DONE;
-                    break;
-                }
-                if (textCharIndex == text.length()) {
-                    currentStep = Step.DONE;
-                    break;
-                }
-                currentStep = Step.CHARS_COMPARISON;
+                stepCharsDoMatch();
                 break;
             case CHARS_DO_NOT_MATCH:
-                printStepInfo("\"" + text.charAt(textCharIndex) + "\" != \"" + sample.charAt(sampleCharIndex) + "\"");
-                if (savedTextCharIndex != 0) {
-                    textCharIndex = savedTextCharIndex;
-                    savedTextCharIndex = 0;
-                }
-                ++textCharIndex;
-                sampleCharIndex = 0;
-                if (textCharIndex == text.length()) {
-                    currentStep = Step.DONE;
-                    break;
-                }
-                currentStep = Step.CHARS_COMPARISON;
+                stepCharsDoNotMatch();
                 break;
             case DONE:
-                printStepInfo("sample found at text[" + (savedTextCharIndex - 1) + "]..text[" + (savedTextCharIndex - 1 + sample.length()) + "]");
+                stepDone();
                 break;
         }
         ++stepsMade;
+    }
+
+    private void stepInitialized() {
+        printStepInfo("Class initialized, but input is not valid!");
+    }
+
+    private void stepValidInputProvided() {
+        printStepInfo("text: " + text + " sample: " + sample);
+        currentStep = Step.CHARS_COMPARISON;
+    }
+
+    private void stepCharsComparison() {
+        printStepInfo("text[" + textCharIndex + "] = \"" + text.charAt(textCharIndex) + "\" sample[" + sampleCharIndex + "] = \"" + sample.charAt(sampleCharIndex) + "\"");
+        if (text.charAt(textCharIndex) == sample.charAt(sampleCharIndex)) {
+            currentStep = Step.CHARS_DO_MATCH;
+        } else {
+            currentStep = Step.CHARS_DO_NOT_MATCH;
+        }
+    }
+
+    private void stepCharsDoMatch() {
+        printStepInfo("\"" + text.charAt(textCharIndex) + "\" == \"" + sample.charAt(sampleCharIndex) + "\"");
+        ++textCharIndex;
+        ++sampleCharIndex;
+        if (savedTextCharIndex == 0) {
+            savedTextCharIndex = textCharIndex;
+        }
+        if (sampleCharIndex == sample.length()) {
+            currentStep = Step.DONE;
+            return;
+        }
+        if (textCharIndex == text.length()) {
+            currentStep = Step.DONE;
+            return;
+        }
+        currentStep = Step.CHARS_COMPARISON;
+    }
+
+    private void stepCharsDoNotMatch() {
+        printStepInfo("\"" + text.charAt(textCharIndex) + "\" != \"" + sample.charAt(sampleCharIndex) + "\"");
+        if (savedTextCharIndex != 0) {
+            textCharIndex = savedTextCharIndex;
+            savedTextCharIndex = 0;
+        }
+        ++textCharIndex;
+        sampleCharIndex = 0;
+        if (textCharIndex == text.length()) {
+            currentStep = Step.DONE;
+            return;
+        }
+        currentStep = Step.CHARS_COMPARISON;
+    }
+
+    private void stepDone() {
+        printStepInfo("sample found at text[" + (savedTextCharIndex - 1) + "]..text[" + (savedTextCharIndex - 1 + sample.length()) + "]");
     }
 
     public void validateInput() {
