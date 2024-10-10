@@ -8,6 +8,7 @@ public class Main {
         algorithmDemonstration.setText("cyx xy xyz");
         for (int i = 0; i < 24; i++) {
             algorithmDemonstration.step();
+            System.out.println(algorithmDemonstration.getCurrentStepInfo());
         }
     }
 }

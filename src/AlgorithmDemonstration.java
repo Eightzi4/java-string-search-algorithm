@@ -1,26 +1,29 @@
 public class AlgorithmDemonstration {
     private String text = "";
     private String sample = "";
-    private Step currentStep = Step.INITIALIZED;
     private int stepsMade = 0;
     private int textCharIndex = 0;
     private int savedTextCharIndex = 0;
     private int sampleCharIndex = 0;
-    private String[] stepsInfo = {
+    private Step currentStep = Step.INITIALIZED;
+    private String currentStepInfo = "";
+
+    private String[] stepDescriptions = {
             "Input hasn't been entered or it is wrong.",
-            "Provided input is valid, but the seach hasn't begun yet.", "Comparing characters text[textCharIndex] & sample[sampleCharIndex].",
+            "Provided input is valid, but the seach hasn't began yet.", "Comparing characters text[textCharIndex] & sample[sampleCharIndex].",
             "Compared characters match.",
             "Compared characters don't match.",
-            "Searching is done."
+            "Searching sample in text is done.",
+            "Searching sample in text is done."
     };
-
-    enum Step {
+    private enum Step {
         INITIALIZED,
         VALID_INPUT_PROVIDED,
         CHARS_COMPARISON,
         CHARS_DO_MATCH,
         CHARS_DO_NOT_MATCH,
-        DONE
+        SAMPLE_FOUND,
+        SAMPLE_NOT_FOUND
     }
 
     public String getText() {
@@ -41,11 +44,19 @@ public class AlgorithmDemonstration {
         validateInput();
     }
 
+    public String getCurrentStepInfo() {
+        return currentStepInfo;
+    }
+
     public void toBeginning() {
-        stepsMade = 0;
-        currentStep = Step.INITIALIZED;
         text = "";
         sample = "";
+        stepsMade = 0;
+        textCharIndex = 0;
+        savedTextCharIndex = 0;
+        sampleCharIndex = 0;
+        currentStep = Step.INITIALIZED;
+        currentStepInfo = "";
     }
 
     public void step() {
@@ -65,24 +76,27 @@ public class AlgorithmDemonstration {
             case CHARS_DO_NOT_MATCH:
                 stepCharsDoNotMatch();
                 break;
-            case DONE:
-                stepDone();
+            case SAMPLE_FOUND:
+                sampleFound();
+                break;
+            case SAMPLE_NOT_FOUND:
+                sampleNotFound();
                 break;
         }
         ++stepsMade;
     }
 
     private void stepInitialized() {
-        printStepInfo("Class initialized, but input is not valid!");
+        formatStepDescription("Class initialized, but input is not valid!");
     }
 
     private void stepValidInputProvided() {
-        printStepInfo("text: " + text + " sample: " + sample);
+        formatStepDescription("text: " + text + " sample: " + sample);
         currentStep = Step.CHARS_COMPARISON;
     }
 
     private void stepCharsComparison() {
-        printStepInfo("text[" + textCharIndex + "] = \"" + text.charAt(textCharIndex) + "\" sample[" + sampleCharIndex + "] = \"" + sample.charAt(sampleCharIndex) + "\"");
+        formatStepDescription("text[" + textCharIndex + "] = \"" + text.charAt(textCharIndex) + "\" sample[" + sampleCharIndex + "] = \"" + sample.charAt(sampleCharIndex) + "\"");
         if (text.charAt(textCharIndex) == sample.charAt(sampleCharIndex)) {
             currentStep = Step.CHARS_DO_MATCH;
         } else {
@@ -91,25 +105,25 @@ public class AlgorithmDemonstration {
     }
 
     private void stepCharsDoMatch() {
-        printStepInfo("\"" + text.charAt(textCharIndex) + "\" == \"" + sample.charAt(sampleCharIndex) + "\"");
+        formatStepDescription("\"" + text.charAt(textCharIndex) + "\" == \"" + sample.charAt(sampleCharIndex) + "\"");
         ++textCharIndex;
         ++sampleCharIndex;
         if (savedTextCharIndex == 0) {
             savedTextCharIndex = textCharIndex;
         }
         if (sampleCharIndex == sample.length()) {
-            currentStep = Step.DONE;
+            currentStep = Step.SAMPLE_FOUND;
             return;
         }
         if (textCharIndex == text.length()) {
-            currentStep = Step.DONE;
+            currentStep = Step.SAMPLE_NOT_FOUND;
             return;
         }
         currentStep = Step.CHARS_COMPARISON;
     }
 
     private void stepCharsDoNotMatch() {
-        printStepInfo("\"" + text.charAt(textCharIndex) + "\" != \"" + sample.charAt(sampleCharIndex) + "\"");
+        formatStepDescription("\"" + text.charAt(textCharIndex) + "\" != \"" + sample.charAt(sampleCharIndex) + "\"");
         if (savedTextCharIndex != 0) {
             textCharIndex = savedTextCharIndex;
             savedTextCharIndex = 0;
@@ -117,14 +131,18 @@ public class AlgorithmDemonstration {
         ++textCharIndex;
         sampleCharIndex = 0;
         if (textCharIndex == text.length()) {
-            currentStep = Step.DONE;
+            currentStep = Step.SAMPLE_NOT_FOUND;
             return;
         }
         currentStep = Step.CHARS_COMPARISON;
     }
 
-    private void stepDone() {
-        printStepInfo("sample found at text[" + (savedTextCharIndex - 1) + "]..text[" + (savedTextCharIndex - 1 + sample.length()) + "]");
+    private void sampleFound() {
+        formatStepDescription("sample found at text[" + (savedTextCharIndex - 1) + "]..text[" + (savedTextCharIndex - 1 + sample.length()) + "]");
+    }
+
+    private void sampleNotFound() {
+        formatStepDescription("text does not contain searched sample");
     }
 
     public void validateInput() {
@@ -136,7 +154,7 @@ public class AlgorithmDemonstration {
         }
     }
 
-    private void printStepInfo(String message) {
-        System.out.println("[" + stepsMade + "] " + message + " info: " + stepsInfo[currentStep.ordinal()]);
+    private void formatStepDescription(String message) {
+        currentStepInfo = "[" + stepsMade + "] " + message + ", description: " + stepDescriptions[currentStep.ordinal()];
     }
 }
