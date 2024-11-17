@@ -1,6 +1,8 @@
+package old;
+
 public class BruteForceSearch {
-    private String text;
-    private String sample;
+    private final String text;
+    private final String sample;
 
     public BruteForceSearch(String text, String sample) {
         this.text = text;
@@ -33,10 +35,7 @@ public class BruteForceSearch {
                 }
             }
         }
-        if (finished == 1) {
-            return true;
-        }
-        return false;
+        return finished == 1;
     }
 
     public boolean find2() {
@@ -64,10 +63,7 @@ public class BruteForceSearch {
                 }
             }
         }
-        if (finished == 1) {
-            return true;
-        }
-        return false;
+        return finished == 1;
     }
 
     public static void main(String[] args) {
@@ -76,3 +72,4 @@ public class BruteForceSearch {
         System.out.println(bruteForceSearch.find2());
     }
 }
+

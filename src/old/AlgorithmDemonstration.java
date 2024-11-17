@@ -1,3 +1,5 @@
+package old;
+
 public class AlgorithmDemonstration {
     private String text = "";
     private String sample = "";
@@ -8,7 +10,7 @@ public class AlgorithmDemonstration {
     private Step currentStep = Step.INITIALIZED;
     private String currentStepInfo = "";
 
-    private String[] stepDescriptions = {
+    private final String[] stepDescriptions = {
             "Input hasn't been entered or it is wrong.",
             "Provided input is valid, but the seach hasn't began yet.", "Comparing characters text[textCharIndex] & sample[sampleCharIndex].",
             "Compared characters match.",
@@ -16,7 +18,7 @@ public class AlgorithmDemonstration {
             "Searching sample in text is done.",
             "Searching sample in text is done."
     };
-    private enum Step {
+    public enum Step {
         INITIALIZED,
         VALID_INPUT_PROVIDED,
         CHARS_COMPARISON,
