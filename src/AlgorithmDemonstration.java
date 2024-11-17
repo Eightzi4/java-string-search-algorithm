@@ -65,7 +65,7 @@ public class AlgorithmDemonstration extends JFrame {
         }
     }
 
-    //eugh its messed up imma try to do something with it later *scull_emoji*
+    //eugh its messed up imma try to do something with it later *skull_emoji* *crying_emoji*
     private void reverseStep() {
         System.out.println("Reverse step: Before -> stepsMade = " + stepsMade + ", textCharIndex = " + textCharIndex + ", sampleCharIndex = " + sampleCharIndex);
 
